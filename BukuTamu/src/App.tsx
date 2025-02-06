@@ -1,34 +1,65 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/electron-vite.animate.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  // Fungsi untuk menangani login
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    // Username dan password yang valid
+    const validUsername = 'user'
+    const validPassword = 'password123'
+
+    // Validasi login
+    if (username === validUsername && password === validPassword) {
+      setIsLoggedIn(true)
+      setError('')
+    } else {
+      setError('Username atau password salah!')
+    }
+  }
+
+  if (isLoggedIn) {
+    return (
+      <div className="welcome-container">
+        <h1>Welcome, {username}!</h1>
+        <p>You are logged in.</p>
+      </div>
+    )
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://electron-vite.github.io" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>bps kota + Barudak senja</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="login-container">
+      <h1>Login</h1>
+      <form onSubmit={handleLogin}>
+        <label htmlFor="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <button type="submit">Login</button>
+
+        {error && <p className="error-message">{error}</p>}
+      </form>
+    </div>
   )
 }
 
